@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project AutoSail | AI-Powered Sales Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with a Tech Blue Accent -->
+    <!-- Application Structure Plan: A thematic, single-page scrolling narrative designed to guide an investor logically from the problem to the solution and its value. The structure begins with a strong hero, defines the problem with impactful stats, introduces the solution, and then uses an interactive diagram for the 'How It Works' section to engage the user. This is followed by a dynamic 'Value Proposition' dashboard. This narrative flow is more persuasive for an investor than simply mirroring the report's sections, as it builds a story of need, solution, and potential. -->
+    <!-- Visualization & Content Choices: 
+        - Opportunity Section: Report Info -> Inefficient manual sales outreach. Goal -> Inform/Persuade. Viz -> Iconography and large text stats. Interaction -> None. Justification -> High-impact, scannable visuals to establish the problem's severity quickly. Method -> HTML/Tailwind.
+        - How It Works Section: Report Info -> 4-step process of AutoSail. Goal -> Organize/Explain. Viz -> Clickable 4-stage process diagram. Interaction -> User clicks a stage to reveal descriptive text below, highlighting the active stage. Justification -> Breaks a complex process into digestible, interactive steps, increasing engagement and comprehension. Method -> HTML/Tailwind/Vanilla JS.
+        - Value Proposition Section: Report Info -> Key benefits (cost, speed, scale, quality). Goal -> Inform/Impress. Viz -> 2x2 grid of cards (dashboard style). Justification -> Presents benefits as powerful, distinct takeaways. Method -> HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        html {
+            -webkit-text-size-adjust: 100%;
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F5F2;
+            color: #2D3748;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        input, button, select, textarea {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .section-title {
+            color: #1A202C;
+        }
+        .brand-blue {
+            color: #4A90E2;
+        }
+        .bg-brand-blue {
+            background-color: #4A90E2;
+        }
+        .border-brand-blue {
+            border-color: #4A90E2;
+        }
+        .workflow-step {
+            transition: all 0.3s ease-in-out;
+        }
+        .workflow-step.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(74, 144, 226, 0.2), 0 4px 6px -2px rgba(74, 144, 226, 0.1);
+            border-color: #4A90E2;
+        }
+        .workflow-connector {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 2px;
+            background-color: #CBD5E0;
+        }
+        @media (min-width: 1024px) {
+            .workflow-connector {
+                width: 4rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <header id="hero" class="text-center py-20 sm:py-24 lg:py-32">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight section-title">
+                Project <span class="brand-blue">AutoSail</span>
+            </h1>
+            <p class="mt-4 text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto">
+                Transforming Sales Outreach with Intelligent Automation. Your 24/7 AI-Powered Sales Agent.
+            </p>
+        </header>
+
+        <section id="opportunity" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold section-title">The High Cost of Manual Outreach</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Scaling a modern sales team is inefficient. Manual processes create bottlenecks, slow down growth, and leave money on the table.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-5xl brand-blue mb-4">⏱️</div>
+                    <h3 class="text-xl font-semibold section-title">Wasted Time</h3>
+                    <p class="mt-2 text-gray-600">Sales reps spend over <span class="font-bold">50% of their time</span> on repetitive, non-revenue-generating tasks like manual emailing and data entry.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-5xl brand-blue mb-4">📉</div>
+                    <h3 class="text-xl font-semibold section-title">Missed Opportunities</h3>
+                    <p class="mt-2 text-gray-600">Slow lead response times are costly. Each delay significantly reduces the chance of engaging a potential client, leading to lost revenue.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="text-5xl brand-blue mb-4">💸</div>
+                    <h3 class="text-xl font-semibold section-title">High Operational Costs</h3>
+                    <p class="mt-2 text-gray-600">Hiring, training, and scaling a team of Sales Development Reps (SDRs) is expensive and time-consuming, limiting scalability.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold section-title">A Simple, Powerful Cycle</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">AutoSail integrates seamlessly into your workflow to automate the entire top-of-funnel process. Click each step to learn more.</p>
+            </div>
+            
+            <div class="relative grid grid-cols-1 md:grid-cols-4 gap-x-8 lg:gap-x-16 gap-y-8">
+                <div id="step-1" class="workflow-step relative bg-white p-6 rounded-lg border-2 border-transparent cursor-pointer">
+                    <div class="font-bold text-lg brand-blue">Step 1</div>
+                    <h3 class="mt-2 font-semibold section-title">Automated Outreach</h3>
+                    <div class="hidden md:block workflow-connector"></div>
+                </div>
+                <div id="step-2" class="workflow-step relative bg-white p-6 rounded-lg border-2 border-transparent cursor-pointer">
+                    <div class="font-bold text-lg brand-blue">Step 2</div>
+                    <h3 class="mt-2 font-semibold section-title">Continuous Monitoring</h3>
+                    <div class="hidden md:block workflow-connector"></div>
+                </div>
+                <div id="step-3" class="workflow-step relative bg-white p-6 rounded-lg border-2 border-transparent cursor-pointer">
+                    <div class="font-bold text-lg brand-blue">Step 3</div>
+                    <h3 class="mt-2 font-semibold section-title">Intelligent Response</h3>
+                    <div class="hidden md:block workflow-connector"></div>
+                </div>
+                <div id="step-4" class="workflow-step bg-white p-6 rounded-lg border-2 border-transparent cursor-pointer">
+                    <div class="font-bold text-lg brand-blue">Step 4</div>
+                    <h3 class="mt-2 font-semibold section-title">Human Escalation</h3>
+                </div>
+            </div>
+
+            <div id="workflow-details" class="mt-12 bg-white p-8 rounded-lg shadow-inner min-h-[150px] flex items-center justify-center">
+                <p class="text-gray-600 text-center text-lg">Select a step above to see the details.</p>
+            </div>
+        </section>
+        
+        <section id="value-proposition" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold section-title">Unlocking Exponential Value</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">AutoSail doesn't just automate tasks; it transforms your sales economics and unlocks new levels of growth.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-semibold section-title">Reduce Acquisition Cost</h3>
+                    <p class="mt-2 text-gray-600">Automate the work of multiple SDRs for a fraction of the price, drastically lowering your customer acquisition cost.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-4">⚡️</div>
+                    <h3 class="text-xl font-semibold section-title">Increase Speed-to-Lead</h3>
+                    <p class="mt-2 text-gray-600">Provide quick, 24/7 responses to inquiries, engaging leads at peak interest and accelerating the sales cycle.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h3 class="text-xl font-semibold section-title">Scale Effortlessly</h3>
+                    <p class="mt-2 text-gray-600">Multiply your outreach and engagement capacity overnight without the cost and complexity of hiring.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md text-center">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-semibold section-title">Improve Quality</h3>
+                    <p class="mt-2 text-gray-600">Ensure every initial client interaction is on-brand, accurate, and professional, building trust from day one.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="technology" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold section-title">Powered by Cutting-Edge AI</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Our solution is built on a foundation of robust, state-of-the-art technologies to deliver reliable and intelligent performance.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold section-title">Large Language Models (LLMs)</h3>
+                    <p class="mt-2 text-gray-600">For natural, human-like conversation and contextual understanding.</p>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold section-title">Retrieval-Augmented Generation (RAG)</h3>
+                    <p class="mt-2 text-gray-600">To ensure all responses are factually accurate and grounded in your verified data.</p>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold section-title">Secure Gmail API Integration</h3>
+                    <p class="mt-2 text-gray-600">Leveraging robust and secure Google infrastructure for all email operations.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center py-12 border-t border-gray-200">
+            <p class="text-gray-600">&copy; 2025 Project AutoSail. All rights reserved.</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const workflowSteps = {
+                'step-1': {
+                    title: 'Automated Outreach',
+                    description: "The system initiates contact with targeted prospects using personalized email templates. Every new conversation is automatically labeled within Gmail for perfect tracking and organization, ensuring no lead falls through the cracks."
+                },
+                'step-2': {
+                    title: 'Continuous Monitoring',
+                    description: "AutoSail polls the designated Gmail account at regular intervals. It instantly identifies new emails and replies within the labeled threads, enabling real-time engagement with prospects around the clock."
+                },
+                'step-3': {
+                    title: 'Intelligent Response Generation (RAG)',
+                    description: "When a reply is received, the AI uses a Retrieval-Augmented Generation (RAG) system. It consults a secure, client-specific knowledge base (products, pricing, FAQs) to find correct information before generating a human-like, contextually accurate response. This grounds the AI in facts, eliminating errors."
+                },
+                'step-4': {
+                    title: 'Seamless Human Escalation',
+                    description: "If a client asks a complex question outside the AI's defined scope (e.g., custom pricing, unique partnerships), the system automatically flags the conversation and escalates it to a human agent with the full context, ensuring a smooth and professional handover."
+                }
+            };
+
+            const stepsContainer = document.querySelector('#how-it-works .grid');
+            const detailsContainer = document.getElementById('workflow-details');
+            let activeStep = null;
+
+            stepsContainer.addEventListener('click', (e) => {
+                const stepElement = e.target.closest('.workflow-step');
+                if (stepElement) {
+                    const stepId = stepElement.id;
+                    
+                    if (activeStep) {
+                        activeStep.classList.remove('active');
+                    }
+                    
+                    stepElement.classList.add('active');
+                    activeStep = stepElement;
+                    
+                    const stepData = workflowSteps[stepId];
+                    detailsContainer.innerHTML = `
+                        <div>
+                            <h4 class="text-xl font-bold section-title text-center">${stepData.title}</h4>
+                            <p class="mt-4 text-gray-600 text-center">${stepData.description}</p>
+                        </div>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
